@@ -33,12 +33,8 @@ censo_pane <- function() {
         )
       },
       listObjects = function(type = "datasets") {
-        tbls <- DBI::dbListTables(censo_conectar())
-        data.frame(
-          name = tbls,
-          type = rep("table", length(tbls)),
-          stringsAsFactors = FALSE
-        )
+        DBI::dbGetQuery(comexstat_connect(), "select table_name as name, 'table'
+ as type from information_schema.tables where table_type!='VIEW'")
       },
       listColumns = function(table) {
         res <- DBI::dbGetQuery(censo_conectar(),
